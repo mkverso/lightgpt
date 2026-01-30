@@ -1,0 +1,68 @@
+/*
+  Theme Definitions
+  Methodology: CSS Variables (Custom Properties)
+  Why: Enables widespread updates by changing a single value. Runtime toggling via classes.
+*/
+
+:root {
+    /* Core Palette (Raw definitions) */
+    --pk-bg-light: oklch(96.7% .005 95.1);
+    /* #F7F7F2 approx equivalent based on spec */
+    --pk-color-1: #F7F7F2;
+    --pk-color-2: #D8F39A;
+    --pk-color-3: #C7EF88;
+    --pk-color-4: #5D9CEC;
+    --pk-color-5: #473622;
+    --pk-color-6: #9a66f6;
+    --pk-bg-dark: #242424;
+    /* Fallback for dark mode base */
+
+    /* Semantic Variables (Usage abstractions) */
+    /* Default: LIGHT MODE */
+    --bg-primary: var(--pk-bg-light);
+    --text-primary: var(--pk-color-5);
+    /* Dark Brown on Light */
+    --text-secondary: #666;
+    --accent-primary: var(--pk-color-4);
+    /* Blue */
+    --accent-secondary: var(--pk-color-2);
+    /* Greenish */
+    --border-color: #ddd;
+    --input-bg: rgba(255, 255, 255, 0.8);
+
+    --font-main: 'JetBrains Mono', monospace;
+}
+
+/* DARK MODE OVERRIDES */
+:root.dark {
+    --bg-primary: var(--pk-bg-dark);
+    --text-primary: var(--pk-color-1);
+    /* Off-white on Dark */
+    --text-secondary: #aaa;
+    --accent-primary: var(--pk-color-6);
+    /* Purple */
+    --accent-secondary: var(--pk-color-3);
+    /* Darker Greenish */
+    --border-color: #444;
+    --input-bg: rgba(0, 0, 0, 0.2);
+}
+
+/* Global resets using variables */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Component-agnostic utility classes (if needed, but preferring variables in components) */
+button {
+    font-family: var(--font-main);
+}
+
+input {
+    font-family: var(--font-main);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
