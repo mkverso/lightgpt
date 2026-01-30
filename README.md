@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# LiteGPT Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, secure, and feature-rich AI chat interface designed to provide a premium user experience with multi-modal capabilities.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Modern UI/UX**: Sleek, ChatGPT-style interface with a pill-shaped input, smooth transitions, and a responsive design.
+- **Collapsible Sidebar**: Efficiently manage multiple chat sessions with a tidy, collapsible sidebar for both desktop and mobile.
+- **Vision Support**: Integrated image upload functionality. Choose from your **Camera** or **Gallery** to provide visual context to the AI (powered by Puter.js).
+- **Secure Authentication**: 
+  - **Credential Hashing**: Uses Web Crypto API (SHA-256) with combined credential hashing.
+  - **Code Obfuscation**: Security constants are obfuscated within the codebase for enhanced production security.
+  - **Protected Routes**: Unauthorized users are automatically redirected from secure pages to the login screen.
+- **Session Management**: Rename, delete, or clear chat sessions. 
+- **Data Portability**: Export and import your chat history as Markdown files.
+- **Dynamic Themes**: Beautiful Light and Dark modes with typography powered by **JetBrains Mono**.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework**: React 18 + Vite + TypeScript
+- **Routing**: React Router Dom v6
+- **AI Core**: Puter.js (for LLM and Vision support)
+- **Security**: Web Crypto API
+- **Styling**: Vanilla CSS with modern variables and glassmorphism.
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
+- Node.js (v18 or higher recommended)
+- npm or yarn
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd litegpt-web
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Development
+Start the development server:
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Build
+Generate a production-ready build:
+```bash
+npm run build
 ```
+
+## 🔒 Security Note
+
+This application implements client-side credential verification. For production environments, it is recommended to pair this with a proper backend authentication service. Current features include:
+- SHA-256 hashing of combined credentials.
+- `AuthContext` for state management.
+- `ProtectedRoute` higher-order components.
+
+---
+
+**Developed By Murali with AI.**
