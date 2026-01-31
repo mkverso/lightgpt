@@ -20,10 +20,11 @@ declare const puter: any;
  * Supports multi-modal inputs (text + image).
  * 
  * @param {string} prompt - The user's message or context
+ * @param {string} [model='gpt-4o-mini'] - The AI model to use
  * @param {string} [image] - Optional base64 encoded image string
  * @returns {Promise<string>} The AI's response text
  */
-export async function generateResponse(prompt: string, image?: string): Promise<string> {
+export async function generateResponse(prompt: string, model: string = 'gpt-4o-mini', image?: string): Promise<string> {
     // Concurrency guard
     if (isGenerating) {
         return "⚠️ Please wait for the current response to finish.";
@@ -58,7 +59,7 @@ export async function generateResponse(prompt: string, image?: string): Promise<
 
         // Call Puter.js AI chat API
         const response = await puter.ai.chat(payload, {
-            model: 'gpt-4o-mini',
+            model: model,
             stream: false
         });
 
@@ -84,7 +85,21 @@ export async function generateResponse(prompt: string, image?: string): Promise<
 
     } catch (error) {
         console.error('AI Generation Error:', error);
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        // Better error extraction for Puter.js/generic errors
+        let errorMessage = "Unknown error";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === 'string') {
+            errorMessage = error;
+        } else if (error && typeof error === 'object') {
+            try {
+                errorMessage = JSON.stringify(error);
+            } catch {
+                errorMessage = String(error);
+            }
+        }
+
         return `⚠️ AI Error: ${errorMessage}`;
     } finally {
         isGenerating = false;

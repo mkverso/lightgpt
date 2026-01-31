@@ -18,9 +18,10 @@ export const useSidebar = () => {
 interface ChatLayoutProps {
     children: React.ReactNode;
     sidebar?: React.ReactNode;
+    modelSelector?: React.ReactNode;
 }
 
-export function ChatLayout({ children, sidebar }: ChatLayoutProps) {
+export function ChatLayout({ children, sidebar, modelSelector }: ChatLayoutProps) {
     const [isSidebarVisible, setIsSidebarVisible] = useState(window.innerWidth > 768);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -138,6 +139,7 @@ export function ChatLayout({ children, sidebar }: ChatLayoutProps) {
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            {modelSelector}
                             <ThemeToggle />
                             <UserMenu />
                         </div>

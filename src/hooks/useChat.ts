@@ -23,6 +23,9 @@ const MAX_MESSAGES = 50;
 export function useChat() {
     const [sessions, setSessions] = useState<ChatSession[]>([]);
     const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+    const [selectedModel, setSelectedModel] = useState<string>(() => {
+        return localStorage.getItem('litegpt_model') || 'gpt-4o-mini';
+    });
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +41,11 @@ export function useChat() {
             setActiveSessionId(firstSession.id);
         }
     }, []);
+
+    // Save model preference
+    useEffect(() => {
+        localStorage.setItem('litegpt_model', selectedModel);
+    }, [selectedModel]);
 
     // Save sessions when they change
     useEffect(() => {
@@ -141,7 +149,7 @@ export function useChat() {
             ).join('\n');
             const fullPrompt = `${promptContext}\nUser: ${text || "[Image uploaded]"}\nAI:`;
 
-            const aiText = await generateResponse(fullPrompt, image);
+            const aiText = await generateResponse(fullPrompt, selectedModel, image);
 
             const newAiMsg: Message = { role: 'ai', content: aiText };
 
@@ -182,5 +190,7 @@ export function useChat() {
         handleDeleteSession,
         handleRenameSession,
         handleSend,
+        selectedModel,
+        setSelectedModel,
     };
 }

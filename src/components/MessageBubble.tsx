@@ -9,6 +9,10 @@
  */
 
 import { memo } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { Message } from '../types/index';
 
 interface MessageBubbleProps {
@@ -36,16 +40,15 @@ export const MessageBubble = memo(function MessageBubble({ message }: MessageBub
         >
             <div
                 style={{
-                    maxWidth: '80%',
+                    maxWidth: '85%',
                     padding: '0.75rem 1rem',
                     borderRadius: '12px',
                     backgroundColor: isUser ? 'var(--msg-user-bg)' : 'var(--msg-ai-bg)',
                     color: isUser ? 'var(--msg-user-text)' : 'var(--msg-ai-text)',
                     border: isUser ? '1px solid var(--accent-primary)' : 'none',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    lineHeight: '1.5',
+                    lineHeight: '1.6',
                     wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
                     borderBottomRightRadius: isUser ? '2px' : '12px',
                     borderBottomLeftRadius: isUser ? '12px' : '2px',
                     display: 'flex',
@@ -67,9 +70,45 @@ export const MessageBubble = memo(function MessageBubble({ message }: MessageBub
                     />
                 )}
 
-                {/* Render text content */}
+                {/* Render text content with Markdown support */}
                 {message.content && (
-                    <div>{message.content}</div>
+                    <div className="markdown-content">
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                code({ node, inline, className, children, ...props }: any) {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    return !inline && match ? (
+                                        <div className="code-block-wrapper">
+                                            <div className="code-block-header">
+                                                <span>{match[1]}</span>
+                                            </div>
+                                            <SyntaxHighlighter
+                                                {...props}
+                                                style={atomDark}
+                                                language={match[1]}
+                                                PreTag="div"
+                                                customStyle={{
+                                                    margin: 0,
+                                                    borderRadius: '0 0 8px 8px',
+                                                    fontSize: '0.9rem',
+                                                    backgroundColor: '#1a1a1a'
+                                                }}
+                                            >
+                                                {String(children).replace(/\n$/, '')}
+                                            </SyntaxHighlighter>
+                                        </div>
+                                    ) : (
+                                        <code className={className} {...props}>
+                                            {children}
+                                        </code>
+                                    );
+                                }
+                            }}
+                        >
+                            {message.content}
+                        </ReactMarkdown>
+                    </div>
                 )}
             </div>
         </div>
